@@ -62,29 +62,34 @@ Rule variant for v1: **English draughts (American checkers)**, 8×8 board. Rules
 
 ## 5. Architecture
 
-### 5.1 Style: modular monolith, hexagonal core
-One deployable Spring Boot application split into modules with enforced boundaries (Spring Modulith or ArchUnit). A monolith is the right size here; microservices would add cost with no benefit.
+### 5.1 Style: modular monolith, hexagonal architecture
+One deployable Spring Boot application structured as ports and adapters, with boundaries enforced by
+ArchUnit. A monolith is the right size here; microservices would add cost with no benefit.
 
 ```
 draughts/
 ├── backend/
-│   └── src/main/java/.../draughts/
-│       ├── engine/      # PURE Java: board, moves, rules. No Spring, no I/O.
-│       ├── ai/          # Computer opponent (depends on engine only)
-│       ├── game/        # Application services: create/join/move/resign; ports
-│       ├── matchmaking/ # Lobby, invitations, queue
-│       ├── player/      # Identity, profile, ratings (later)
-│       ├── web/         # REST controllers, WebSocket handlers, DTOs
-│       └── persistence/ # Adapters implementing game ports (JDBC)
+│   └── src/main/java/com/draughts/
+│       ├── domain/          # PURE Java (+ Lombok): engine, Game aggregate, Player. No Spring, no I/O.
+│       ├── application/
+│       │   ├── port/in/     # Use cases: create/join/move/resign/draw, queries
+│       │   ├── port/out/    # Repositories, event publisher, computer player
+│       │   └── service/     # Use-case implementations (orchestration only)
+│       ├── adapter/
+│       │   ├── in/          # web (REST, WebSocket, DTOs), scheduling (computer moves)
+│       │   └── out/         # persistence (JDBC), ai (search), event (Spring events)
+│       └── config/          # Composition root
 └── frontend/
     └── src/
         ├── features/    # game-board, lobby, history, settings
-        ├── api/         # generated OpenAPI client + WebSocket client
+        ├── api/         # REST + WebSocket client
         ├── components/  # shared UI
         └── store/
 ```
 
-Dependency rule: `web` and `persistence` depend on `game`; `game` depends on `engine`; **`engine` depends on nothing**. This keeps the rules testable in milliseconds and reusable (e.g. by the AI or a CLI).
+Dependency rule: adapters depend on ports; application services depend on ports and the domain;
+**the domain depends on nothing**. This keeps the rules testable in milliseconds and lets technologies
+(database, AI, transport) be replaced without touching the core.
 
 ### 5.2 Key design decisions
 1. **Server-authoritative.** The client sends a *move intent*; the server validates it with the engine, persists it and broadcasts the result. The client never decides legality.

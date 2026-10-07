@@ -33,27 +33,52 @@ cd frontend && npm run lint && npm run typecheck && npm test
 Backend integration tests start PostgreSQL with Testcontainers. To use an existing database instead, set
 `DRAUGHTS_TEST_DATABASE_URL` (and optionally `DRAUGHTS_TEST_DATABASE_USERNAME` / `_PASSWORD`).
 
-## Layout
+## Architecture
+
+The backend follows **hexagonal architecture** (ports and adapters). Dependencies point inwards only;
+`ArchitectureTest` enforces this on every build.
 
 ```
 backend/src/main/java/com/draughts/
-  engine/       Pure rules engine: bitboards, move generation, draw rules, FEN, Zobrist. No dependencies.
-  ai/           Negamax + alpha-beta, iterative deepening, transposition table. Depends on engine only.
-  game/         Game aggregate, GameService (create/join/move/resign/draw), AI scheduler, repository port.
-  player/       Guest players.
-  persistence/  JDBC adapters (JdbcClient) for the game and player ports.
-  web/          REST controllers, STOMP handlers, DTOs, problem details, guest identity cookie.
-backend/src/main/resources/db/migration/   Flyway migrations.
-
-frontend/src/
-  api/          Typed REST client, TanStack Query hooks, STOMP subscription.
-  features/     game (board, selection logic, controls), lobby, history.
-  components/   App layout.
-  store/        Persisted UI settings (theme, language, board orientation).
-  locales/      English and Portuguese.
+  domain/                      Framework-free core (plain Java + Lombok)
+    engine/                    Rules: bitboards, move generation, draw rules, FEN, Zobrist
+    game/                      Game aggregate: join, play, resign, draw offers, invariants, versioning
+    player/                    Player
+  application/
+    port/in/                   Use cases the outside world calls (CreateGameUseCase, PlayMoveUseCase, ...)
+    port/out/                  What the core needs (GameRepository, PlayerRepository, GameEventPublisher,
+                               ComputerPlayer)
+    service/                   Thin use-case implementations: load, call the aggregate, save, publish
+  adapter/
+    in/web/                    REST + STOMP controllers, DTOs, view mapping, guest identity cookie
+    in/scheduling/             Triggers computer moves after commits and on a recovery sweep
+    out/persistence/           JdbcClient + PostgreSQL implementations of the repositories
+    out/ai/                    Alpha-beta search implementing ComputerPlayer
+    out/event/                 GameEventPublisher on Spring application events
+  config/                      Composition root: registers rule sets, clock, random source
+backend/src/main/resources/db/migration/   Flyway migrations
 ```
 
-The `engine` → `ai` → `game` → adapters dependency rule is enforced by `ArchitectureTest`.
+Design notes:
+
+- **Rich domain model.** Business rules (whose turn, who may join, draw offers, game end) live on the
+  immutable `Game` aggregate, so use-case services stay a few lines long.
+- **Single responsibility / interface segregation.** One small inbound port per use case; controllers
+  depend on those ports, never on services. Commands and queries use separate controllers.
+- **Dependency inversion.** The core defines `ComputerPlayer`, `GameRepository`, etc.; adapters implement
+  them. The AI can be swapped without touching the domain.
+- **Open/closed.** A new variant is a new `RuleSet` bean; `Variants` picks it up.
+- **Lombok** removes constructors (`@RequiredArgsConstructor`), loggers (`@Slf4j`), null checks
+  (`@NonNull`), copy-and-modify code (`@Builder(toBuilder = true)`, `@With`) and utility-class boilerplate.
+
+```
+frontend/src/
+  api/          Typed REST client, TanStack Query hooks, STOMP subscription
+  features/     game (board, selection logic, controls), lobby, history
+  components/   App layout
+  store/        Persisted UI settings (theme, language, board orientation)
+  locales/      English and Portuguese
+```
 
 ## How it works
 
