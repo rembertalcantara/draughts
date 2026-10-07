@@ -1,0 +1,70 @@
+{
+  "app": { "title": "Damas", "play": "Jogar", "history": "Minhas partidas", "skip": "Ir para o conteúdo" },
+  "common": { "loading": "Carregando…", "save": "Salvar", "cancel": "Cancelar", "edit": "Editar" },
+  "settings": { "theme": "Tema", "system": "Sistema", "light": "Claro", "dark": "Escuro", "language": "Idioma", "name": "Seu nome" },
+  "color": { "BLACK": "Pretas", "WHITE": "Brancas", "RANDOM": "Aleatório" },
+  "difficulty": { "EASY": "Fácil", "MEDIUM": "Médio", "HARD": "Difícil" },
+  "board": {
+    "label": "Tabuleiro de damas",
+    "square": "Casa {{square}}",
+    "man": "pedra ({{color}})",
+    "king": "dama ({{color}})",
+    "empty": "vazia",
+    "selected": "selecionada",
+    "target": "destino possível",
+    "movable": "pode mover",
+    "mustCapture": "A captura é obrigatória.",
+    "continueJump": "Continue capturando: escolha a próxima casa."
+  },
+  "lobby": {
+    "newGame": "Nova partida",
+    "opponent": "Adversário",
+    "computer": "Computador",
+    "friend": "Outro jogador",
+    "yourColor": "Sua cor",
+    "difficulty": "Dificuldade",
+    "start": "Começar",
+    "openGames": "Partidas abertas",
+    "noOpenGames": "Ninguém está esperando um adversário agora.",
+    "join": "Entrar na partida",
+    "yours": "Sua partida",
+    "createdBy": "{{name}} joga com {{color}}"
+  },
+  "history": { "title": "Minhas partidas", "empty": "Você ainda não jogou nenhuma partida.", "vs": "contra", "moves": "{{count}} lances", "open": "Abrir" },
+  "game": {
+    "moves": "Lances",
+    "noMoves": "Nenhum lance ainda.",
+    "controls": "Controles da partida",
+    "flip": "Girar tabuleiro",
+    "offerDraw": "Propor empate",
+    "drawOffered": "Empate proposto",
+    "acceptDraw": "Aceitar empate",
+    "declineDraw": "Recusar",
+    "drawOfferReceived": "Seu adversário propõe empate.",
+    "resign": "Desistir",
+    "confirmResign": "Desistir desta partida?",
+    "waiting": "Aguardando jogador…",
+    "share": "Envie o link desta página para um amigo.",
+    "copyLink": "Copiar link",
+    "copied": "Copiado!"
+  },
+  "status": {
+    "waitingForOpponent": "Aguardando um adversário.",
+    "yourTurn": "Sua vez.",
+    "computerThinking": "O computador está pensando…",
+    "turnOf": "Aguardando {{name}}.",
+    "youWon": "Você venceu! {{reason}}",
+    "youLost": "Você perdeu. {{reason}}",
+    "won": "{{color}} venceram. {{reason}}",
+    "draw": "Empate. {{reason}}"
+  },
+  "reason": {
+    "NO_PIECES": "Sem peças.",
+    "NO_MOVES": "Sem lances possíveis.",
+    "MOVE_LIMIT": "40 lances sem captura nem movimento de pedra.",
+    "REPETITION": "Mesma posição três vezes.",
+    "RESIGNATION": "Por desistência.",
+    "AGREEMENT": "Por acordo."
+  },
+  "result": { "BLACK_WIN": "Pretas venceram", "WHITE_WIN": "Brancas venceram", "DRAW": "Empate", "OPEN": "Aguardando", "IN_PROGRESS": "Em andamento" }
+}

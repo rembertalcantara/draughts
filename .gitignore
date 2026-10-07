@@ -1,0 +1,15 @@
+# Backend
+backend/target/
+backend/.jqwik-database
+backend/src/main/resources/static/
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+
+# Editors / OS
+.idea/
+.vscode/
+*.iml
+.DS_Store
+.env

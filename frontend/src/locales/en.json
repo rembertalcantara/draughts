@@ -1,0 +1,70 @@
+{
+  "app": { "title": "Draughts", "play": "Play", "history": "My games", "skip": "Skip to content" },
+  "common": { "loading": "Loading…", "save": "Save", "cancel": "Cancel", "edit": "Edit" },
+  "settings": { "theme": "Theme", "system": "System", "light": "Light", "dark": "Dark", "language": "Language", "name": "Your name" },
+  "color": { "BLACK": "Black", "WHITE": "White", "RANDOM": "Random" },
+  "difficulty": { "EASY": "Easy", "MEDIUM": "Medium", "HARD": "Hard" },
+  "board": {
+    "label": "Draughts board",
+    "square": "Square {{square}}",
+    "man": "{{color}} man",
+    "king": "{{color}} king",
+    "empty": "empty",
+    "selected": "selected",
+    "target": "possible destination",
+    "movable": "can move",
+    "mustCapture": "You must capture.",
+    "continueJump": "Keep jumping: choose the next square."
+  },
+  "lobby": {
+    "newGame": "New game",
+    "opponent": "Opponent",
+    "computer": "Computer",
+    "friend": "Another player",
+    "yourColor": "Your colour",
+    "difficulty": "Difficulty",
+    "start": "Start game",
+    "openGames": "Open games",
+    "noOpenGames": "No one is waiting for an opponent right now.",
+    "join": "Join game",
+    "yours": "Your game",
+    "createdBy": "{{name}} plays {{color}}"
+  },
+  "history": { "title": "My games", "empty": "You have not played any games yet.", "vs": "vs", "moves": "{{count}} moves", "open": "Open" },
+  "game": {
+    "moves": "Moves",
+    "noMoves": "No moves yet.",
+    "controls": "Game controls",
+    "flip": "Flip board",
+    "offerDraw": "Offer draw",
+    "drawOffered": "Draw offered",
+    "acceptDraw": "Accept draw",
+    "declineDraw": "Decline",
+    "drawOfferReceived": "Your opponent offers a draw.",
+    "resign": "Resign",
+    "confirmResign": "Resign this game?",
+    "waiting": "Waiting for player…",
+    "share": "Send this page's link to a friend.",
+    "copyLink": "Copy link",
+    "copied": "Copied!"
+  },
+  "status": {
+    "waitingForOpponent": "Waiting for an opponent to join.",
+    "yourTurn": "Your turn.",
+    "computerThinking": "The computer is thinking…",
+    "turnOf": "Waiting for {{name}}.",
+    "youWon": "You won! {{reason}}",
+    "youLost": "You lost. {{reason}}",
+    "won": "{{color}} won. {{reason}}",
+    "draw": "Draw. {{reason}}"
+  },
+  "reason": {
+    "NO_PIECES": "No pieces left.",
+    "NO_MOVES": "No legal moves left.",
+    "MOVE_LIMIT": "40 moves without a capture or man move.",
+    "REPETITION": "Same position three times.",
+    "RESIGNATION": "By resignation.",
+    "AGREEMENT": "By agreement."
+  },
+  "result": { "BLACK_WIN": "Black won", "WHITE_WIN": "White won", "DRAW": "Draw", "OPEN": "Waiting", "IN_PROGRESS": "In progress" }
+}
