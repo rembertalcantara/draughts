@@ -23,6 +23,20 @@ Or run everything in one container: `docker compose up --build`, then open http:
 
 API docs (Swagger UI): http://localhost:8080/api/docs, OpenAPI JSON at `/api/openapi`.
 
+## Deploy
+
+GitHub Pages cannot host this (it needs a Java server, PostgreSQL and WebSockets). `render.yaml` is a
+[Render](https://render.com) Blueprint for one Docker web service plus a PostgreSQL database:
+
+1. Sign in to Render, choose **New → Blueprint**, and select this repository.
+2. Apply it. Render builds the `Dockerfile`, creates the database, and generates the identity secret.
+3. Open the `*.onrender.com` URL.
+
+On Render's free plan the service sleeps after inactivity (the first request takes ~1 minute) and the free
+database expires after 30 days; use a paid plan for anything lasting. The same image runs on Fly.io,
+Railway, Koyeb or any Docker host: set `DATABASE_URL` (or `DB_*`), `DRAUGHTS_IDENTITY_SECRET` and
+`DRAUGHTS_SECURE_COOKIE=true`.
+
 ## Tests
 
 ```bash
@@ -99,7 +113,8 @@ frontend/src/
 
 | Variable | Default | Purpose |
 |---|---|---|
-| `DATABASE_URL` | `jdbc:postgresql://localhost:5432/draughts` | JDBC URL |
+| `DATABASE_URL` | built from `DB_HOST`/`DB_PORT`/`DB_NAME` (`localhost:5432/draughts`) | JDBC URL; `DB_USER` / `DB_PASSWORD` also work |
+| `PORT` | `8080` | HTTP port |
 | `DATABASE_USERNAME` / `DATABASE_PASSWORD` | `draughts` / `draughts` | Database credentials |
 | `DRAUGHTS_IDENTITY_SECRET` | dev-only value | HMAC key for the identity cookie (min. 32 chars). **Set in every deployment.** |
 | `DRAUGHTS_SECURE_COOKIE` | `false` | Mark the cookie `Secure` (enable behind HTTPS) |

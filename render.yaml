@@ -1,0 +1,31 @@
+# Render Blueprint: one web service (the Docker image serves API + React app) and a PostgreSQL database.
+# Deploy: https://dashboard.render.com/blueprint/new?repo=https://github.com/rembertalcantara/draughts
+services:
+  - type: web
+    name: draughts
+    runtime: docker
+    plan: free
+    healthCheckPath: /actuator/health
+    envVars:
+      - key: DB_HOST
+        fromDatabase: { name: draughts-db, property: host }
+      - key: DB_PORT
+        fromDatabase: { name: draughts-db, property: port }
+      - key: DB_NAME
+        fromDatabase: { name: draughts-db, property: database }
+      - key: DB_USER
+        fromDatabase: { name: draughts-db, property: user }
+      - key: DB_PASSWORD
+        fromDatabase: { name: draughts-db, property: password }
+      - key: DRAUGHTS_IDENTITY_SECRET
+        generateValue: true
+      - key: DRAUGHTS_SECURE_COOKIE
+        value: "true"
+      - key: JAVA_TOOL_OPTIONS
+        value: "-XX:MaxRAMPercentage=70 -XX:+UseSerialGC"
+
+databases:
+  - name: draughts-db
+    plan: free
+    databaseName: draughts
+    user: draughts
