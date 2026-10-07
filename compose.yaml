@@ -1,0 +1,36 @@
+# Local development:
+#   docker compose up db          # just PostgreSQL, run backend + Vite yourself
+#   docker compose up --build     # full app on http://localhost:8080
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: draughts
+      POSTGRES_USER: draughts
+      POSTGRES_PASSWORD: draughts
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U draughts -d draughts"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  app:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: jdbc:postgresql://db:5432/draughts
+      DATABASE_USERNAME: draughts
+      DATABASE_PASSWORD: draughts
+      DRAUGHTS_IDENTITY_SECRET: local-compose-secret-change-me-0123456789
+      DRAUGHTS_ALLOWED_ORIGINS: http://localhost:8080
+    ports:
+      - "8080:8080"
+
+volumes:
+  pgdata:

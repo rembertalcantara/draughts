@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: draughts
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/draughts}
+    username: ${DATABASE_USERNAME:draughts}
+    password: ${DATABASE_PASSWORD:draughts}
+  threads:
+    virtual:
+      enabled: true
+  mvc:
+    problemdetails:
+      enabled: true
+
+server:
+  shutdown: graceful
+  forward-headers-strategy: framework
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+
+springdoc:
+  api-docs:
+    path: /api/openapi
+  swagger-ui:
+    path: /api/docs
+
+draughts:
+  identity:
+    # Override in every deployed environment.
+    secret: ${DRAUGHTS_IDENTITY_SECRET:dev-only-secret-change-me-dev-only-secret}
+    secure-cookie: ${DRAUGHTS_SECURE_COOKIE:false}
+  web:
+    allowed-origins: ${DRAUGHTS_ALLOWED_ORIGINS:http://localhost:5173}
+  ai:
+    threads: 2
+    sweep-interval: PT15S
