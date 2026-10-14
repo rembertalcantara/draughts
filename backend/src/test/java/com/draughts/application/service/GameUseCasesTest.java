@@ -57,7 +57,8 @@ class GameUseCasesTest {
 
     private final CreateGameService create = new CreateGameService(store, variants, clock, new SplittableRandom(1));
     private final JoinGameService join = new JoinGameService(store, clock);
-    private final PlayMoveService play = new PlayMoveService(store, variants, computer, clock);
+    private final PlayMoveService play = new PlayMoveService(store, variants, clock);
+    private final PlayComputerMoveService playComputer = new PlayComputerMoveService(store, variants, computer, clock);
     private final EndGameService end = new EndGameService(store, computer, clock);
     private final GameQueryService query = new GameQueryService(store, repository, variants);
 
@@ -98,10 +99,10 @@ class GameUseCasesTest {
         var game = create.create(command(Opponent.AI).color(ColorChoice.WHITE).difficulty(Difficulty.EASY).build());
         assertThat(query.awaitingComputer(10)).containsExactly(game.id());
 
-        var after = play.playComputerMove(game.id());
+        var after = playComputer.playComputerMove(game.id());
 
         assertThat(after.moves()).hasSize(1);
-        assertThat(play.playComputerMove(game.id())).isEqualTo(after);
+        assertThat(playComputer.playComputerMove(game.id())).isEqualTo(after);
         assertThat(query.awaitingComputer(10)).isEmpty();
         assertThat(query.legalMoves(after)).isNotEmpty();
     }

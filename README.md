@@ -46,8 +46,8 @@ backend/src/main/java/com/draughts/
     player/                    Player
   application/
     port/in/                   Use cases the outside world calls (CreateGameUseCase, PlayMoveUseCase, ...)
-    port/out/                  What the core needs (GameRepository, PlayerRepository, GameEventPublisher,
-                               ComputerPlayer)
+    port/out/                  What the core needs (GameRepository, GameFinder, PlayerRepository,
+                               GameEventPublisher, ComputerPlayer)
     service/                   Thin use-case implementations: load, call the aggregate, save, publish
   adapter/
     in/web/                    REST + STOMP controllers, DTOs, view mapping, guest identity cookie
@@ -63,8 +63,11 @@ Design notes:
 
 - **Rich domain model.** Business rules (whose turn, who may join, draw offers, game end) live on the
   immutable `Game` aggregate, so use-case services stay a few lines long.
-- **Single responsibility / interface segregation.** One small inbound port per use case; controllers
-  depend on those ports, never on services. Commands and queries use separate controllers.
+- **Single responsibility / interface segregation.** One small inbound port per use case, and one service per
+  actor (`PlayMoveService` for people, `PlayComputerMoveService` for the computer); controllers depend on
+  those ports, never on services. Queries are split by client (`GameQuery`, `LegalMovesQuery`,
+  `ComputerTurnQuery`), and persistence is split into `GameRepository` (the aggregate) and `GameFinder`
+  (listings). Commands and queries use separate controllers.
 - **Dependency inversion.** The core defines `ComputerPlayer`, `GameRepository`, etc.; adapters implement
   them. The AI can be swapped without touching the domain.
 - **Open/closed.** A new variant is a new `RuleSet` bean; `Variants` picks it up.

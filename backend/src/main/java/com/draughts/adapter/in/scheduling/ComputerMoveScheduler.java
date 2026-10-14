@@ -1,6 +1,6 @@
 package com.draughts.adapter.in.scheduling;
 
-import com.draughts.application.port.in.GameQuery;
+import com.draughts.application.port.in.ComputerTurnQuery;
 import com.draughts.application.port.in.PlayComputerMoveUseCase;
 import com.draughts.domain.game.GameChanged;
 import com.draughts.domain.game.GameException;
@@ -26,7 +26,7 @@ import java.util.concurrent.ExecutorService;
 class ComputerMoveScheduler {
 
     private final PlayComputerMoveUseCase playComputerMove;
-    private final GameQuery games;
+    private final ComputerTurnQuery games;
     private final ExecutorService computerMoveExecutor;
     private final Set<UUID> pending = ConcurrentHashMap.newKeySet();
 

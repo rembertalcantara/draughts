@@ -1,5 +1,6 @@
 package com.draughts.application.service;
 
+import com.draughts.application.port.out.GameFinder;
 import com.draughts.application.port.out.GameRepository;
 import com.draughts.domain.game.Game;
 import com.draughts.domain.game.GameException;
@@ -14,7 +15,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /** Test double honouring the optimistic-locking contract of {@link GameRepository}. */
-class InMemoryGameRepository implements GameRepository {
+class InMemoryGameRepository implements GameRepository, GameFinder {
 
     private final Map<UUID, Game> games = new ConcurrentHashMap<>();
 
