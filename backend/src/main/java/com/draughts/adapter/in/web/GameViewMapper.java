@@ -6,7 +6,7 @@ import com.draughts.adapter.in.web.dto.ApiDtos.MoveView;
 import com.draughts.adapter.in.web.dto.ApiDtos.PieceView;
 import com.draughts.adapter.in.web.dto.ApiDtos.PlayedMoveView;
 import com.draughts.adapter.in.web.dto.ApiDtos.PlayerView;
-import com.draughts.application.port.in.GameQuery;
+import com.draughts.application.port.in.LegalMovesQuery;
 import com.draughts.application.port.in.PlayerUseCase;
 import com.draughts.domain.engine.Color;
 import com.draughts.domain.engine.Fen;
@@ -27,7 +27,7 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 class GameViewMapper {
 
-    private final GameQuery games;
+    private final LegalMovesQuery games;
     private final PlayerUseCase players;
 
     /** @param viewer the requesting player, or {@code null} for a broadcast */

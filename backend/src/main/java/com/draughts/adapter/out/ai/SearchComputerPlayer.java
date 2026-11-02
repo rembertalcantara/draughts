@@ -7,6 +7,8 @@ import com.draughts.domain.engine.Move;
 import com.draughts.domain.game.Difficulty;
 import org.springframework.stereotype.Component;
 
+import java.util.random.RandomGenerator;
+
 /** {@link ComputerPlayer} backed by the alpha-beta {@link SearchAi}. */
 @Component
 class SearchComputerPlayer implements ComputerPlayer {
@@ -14,7 +16,11 @@ class SearchComputerPlayer implements ComputerPlayer {
     /** The computer accepts a draw when its evaluation is at least this far behind. */
     private static final int ACCEPTS_DRAW_BELOW = -100;
 
-    private final SearchAi search = new SearchAi();
+    private final SearchAi search;
+
+    SearchComputerPlayer(RandomGenerator random) {
+        this.search = new SearchAi(random);
+    }
 
     @Override
     public Move chooseMove(GameState state, Difficulty difficulty) {

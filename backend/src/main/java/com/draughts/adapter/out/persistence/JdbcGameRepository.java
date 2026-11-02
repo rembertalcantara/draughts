@@ -1,5 +1,6 @@
 package com.draughts.adapter.out.persistence;
 
+import com.draughts.application.port.out.GameFinder;
 import com.draughts.application.port.out.GameRepository;
 import com.draughts.domain.game.Game;
 import com.draughts.domain.game.GameException;
@@ -16,7 +17,7 @@ import java.util.UUID;
 
 @Repository
 @RequiredArgsConstructor
-class JdbcGameRepository implements GameRepository {
+class JdbcGameRepository implements GameRepository, GameFinder {
 
     private static final String SUMMARY_SELECT = """
             select g.id, g.variant, g.status, g.black_player_id, g.white_player_id, g.ai_color, g.ai_difficulty,

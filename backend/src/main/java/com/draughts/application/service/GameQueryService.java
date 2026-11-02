@@ -1,7 +1,9 @@
 package com.draughts.application.service;
 
+import com.draughts.application.port.in.ComputerTurnQuery;
 import com.draughts.application.port.in.GameQuery;
-import com.draughts.application.port.out.GameRepository;
+import com.draughts.application.port.in.LegalMovesQuery;
+import com.draughts.application.port.out.GameFinder;
 import com.draughts.domain.engine.Move;
 import com.draughts.domain.game.Game;
 import com.draughts.domain.game.GameSummary;
@@ -17,10 +19,10 @@ import java.util.UUID;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-class GameQueryService implements GameQuery {
+class GameQueryService implements GameQuery, LegalMovesQuery, ComputerTurnQuery {
 
     private final GameStore store;
-    private final GameRepository games;
+    private final GameFinder games;
     private final Variants variants;
 
     @Override
