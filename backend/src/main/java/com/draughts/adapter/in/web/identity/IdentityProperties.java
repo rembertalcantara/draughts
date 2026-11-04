@@ -12,7 +12,8 @@ public record IdentityProperties(String secret, @DefaultValue("false") boolean s
 
     public IdentityProperties {
         if (secret == null || secret.length() < 32) {
-            throw new IllegalArgumentException("draughts.identity.secret must be at least 32 characters");
+            throw new IllegalArgumentException("draughts.identity.secret must be set to at least 32 characters "
+                    + "(environment variable DRAUGHTS_IDENTITY_SECRET; use the \"dev\" profile for local development)");
         }
     }
 }

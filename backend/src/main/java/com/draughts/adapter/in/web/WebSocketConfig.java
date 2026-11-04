@@ -4,6 +4,7 @@ import com.draughts.adapter.in.web.identity.PlayerHandshakeHandler;
 import com.draughts.adapter.in.web.identity.PlayerToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
@@ -26,6 +27,11 @@ class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.addEndpoint("/ws")
                 .setHandshakeHandler(new PlayerHandshakeHandler(tokens))
                 .setAllowedOriginPatterns(properties.allowedOrigins().toArray(String[]::new));
+    }
+
+    @Override
+    public void configureClientInboundChannel(ChannelRegistration registration) {
+        registration.interceptors(new SubscriptionGuard());
     }
 
     @Override

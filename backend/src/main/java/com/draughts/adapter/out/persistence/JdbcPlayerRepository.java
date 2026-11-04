@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,5 +52,17 @@ class JdbcPlayerRepository implements PlayerRepository {
                     });
         }
         return names;
+    }
+
+    @Override
+    public int deleteWithoutGamesCreatedBefore(Instant cutoff) {
+        return jdbc.sql("""
+                        delete from player p
+                        where p.created_at < :cutoff
+                          and not exists (select 1 from game g where g.black_player_id = p.id or g.white_player_id = p.id)
+                          and not exists (select 1 from game_move m where m.played_by = p.id)
+                        """)
+                .param("cutoff", Timestamp.from(cutoff))
+                .update();
     }
 }

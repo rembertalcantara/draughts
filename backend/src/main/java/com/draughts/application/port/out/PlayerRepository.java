@@ -2,6 +2,7 @@ package com.draughts.application.port.out;
 
 import com.draughts.domain.player.Player;
 
+import java.time.Instant;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
@@ -15,4 +16,11 @@ public interface PlayerRepository {
     Optional<Player> findById(UUID id);
 
     Map<UUID, String> findDisplayNames(Collection<UUID> ids);
+
+    /**
+     * Deletes players created before {@code cutoff} that never took part in a game.
+     *
+     * @return how many were deleted
+     */
+    int deleteWithoutGamesCreatedBefore(Instant cutoff);
 }

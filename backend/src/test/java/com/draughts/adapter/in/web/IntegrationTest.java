@@ -12,7 +12,8 @@ import org.testcontainers.postgresql.PostgreSQLContainer;
  * existing database instead.
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        properties = "draughts.ai.sweep-interval=PT1S")
+        properties = {"draughts.ai.sweep-interval=PT1S",
+                "draughts.identity.secret=integration-test-secret-0123456789abcdef"})
 abstract class IntegrationTest {
 
     private static PostgreSQLContainer postgres;

@@ -15,7 +15,7 @@ Requirements: JDK 25, Node 24, Docker (for PostgreSQL and the integration tests)
 ```bash
 docker compose up -d db                 # PostgreSQL on localhost:5432
 
-cd backend && ./mvnw spring-boot:run    # API on http://localhost:8080
+cd backend && ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev   # API on http://localhost:8080
 cd frontend && npm install && npm run dev   # app on http://localhost:5173
 ```
 
@@ -119,7 +119,8 @@ frontend/src/
 | `DATABASE_URL` | built from `DB_HOST`/`DB_PORT`/`DB_NAME` (`localhost:5432/draughts`) | JDBC URL; `DB_USER` / `DB_PASSWORD` also work |
 | `PORT` | `8080` | HTTP port |
 | `DATABASE_USERNAME` / `DATABASE_PASSWORD` | `draughts` / `draughts` | Database credentials |
-| `DRAUGHTS_IDENTITY_SECRET` | dev-only value | HMAC key for the identity cookie (min. 32 chars). **Set in every deployment.** |
+| `DRAUGHTS_IDENTITY_SECRET` | none (required) | HMAC key for the identity cookie (min. 32 chars). The app will not start without it; the `dev` profile supplies a throwaway value locally. |
+| `draughts.guests.retention` | `P7D` | Guest players that never played a game are deleted after this long (ISO-8601 duration). |
 | `DRAUGHTS_SECURE_COOKIE` | `false` | Mark the cookie `Secure` (enable behind HTTPS) |
 | `DRAUGHTS_ALLOWED_ORIGINS` | `http://localhost:5173` | Extra origins allowed to open WebSocket connections |
 

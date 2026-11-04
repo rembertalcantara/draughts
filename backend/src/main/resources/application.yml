@@ -31,11 +31,16 @@ springdoc:
 
 draughts:
   identity:
-    # Override in every deployed environment.
-    secret: ${DRAUGHTS_IDENTITY_SECRET:dev-only-secret-change-me-dev-only-secret}
+    # Required (min. 32 characters). No default: the app refuses to start without it.
+    # For local development run with the "dev" profile, which supplies a throwaway value.
+    secret: ${DRAUGHTS_IDENTITY_SECRET:}
     secure-cookie: ${DRAUGHTS_SECURE_COOKIE:false}
   web:
     allowed-origins: ${DRAUGHTS_ALLOWED_ORIGINS:${RENDER_EXTERNAL_URL:http://localhost:5173}}
   ai:
     threads: 2
     sweep-interval: PT15S
+  guests:
+    # Guests that never played a game are deleted after this long.
+    retention: P7D
+    prune-interval: PT6H
